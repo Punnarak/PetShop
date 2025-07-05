@@ -1,21 +1,22 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.sound.sampled.*; // for sounds
+import javax.sound.sampled.*; 
 import java.util.*;
 
 public class Map extends JFrame 
-// public class SlothGame extends JFrame
+
 {
   // components
-  // private JFrame New;
-  protected Map MapI;
+  protected Map MapI;  
+  private New NewI;
+  private MainApplication bFirstI;
+  
   private JLabel contentpane;
   private JButton backButton;
+  
   private MyImageIcon interBG;
-  private SettingInterface SettingI;
-  private New NewI;
-  private Main bFirstI;
+
   private ArrayList<Player> infom;
   private Building b1,b2,b3,b4;
   protected String name;
@@ -27,16 +28,18 @@ public class Map extends JFrame
  public Map(Player use,String n,int b,int s,int t1,int t3,int t4) {
 
     setTitle("Map");
-    setBounds( 400, 200, frameWidth, frameHeight);
+    setBounds( 100, 40, frameWidth, frameHeight);
     setResizable(false);
     setVisible(true);
-    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
             dispose();
-            System.exit(0);
+            new MainApplication();
+            
       }
     });
+    
     me = use;
     name = n;
     bb = b;
@@ -44,6 +47,7 @@ public class Map extends JFrame
     tt1 = t1;
     tt3 = t3;
     tt4 = t4;
+    
     AddComponents();
 
     }
@@ -80,10 +84,11 @@ public void AddComponents() {
     backButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
-      {
-          //  hitSound.playOnce();
+      {  
+          MySoundEffect hitSound = new MySoundEffect("Lovely/beep.wav");
+           hitSound.playOnce();
            setVisible(false);
-           bFirstI = new Main();
+           bFirstI = new MainApplication();
            bFirstI.setVisible(true);
         
       }
@@ -97,75 +102,60 @@ public void AddComponents() {
    
     validate();
   }
-//  public void infom(String n,int b,int s,int bb1 ,int bb3 ,int bb4){
-//       name = n;
-//       bb = b;
-//       ss = s;
-//       t1 = bb1;
-//       t3 = bb3;
-//       t4 = bb4;
-//       System.out.println(name + " mmmmmmmm");
-//       ren();
-//       build1();
-//       build3();
-//       build4();
-//  } 
-//  public String ren(){
-//      System.out.println(name + " ren");
-//      return name;
-//  }
+
   public int build1(){
        
       System.out.println(tt1 );
       return tt1;
   }
-   public int build3(){
+  public int build3(){
+       
       System.out.println(tt3);
       return tt3;
   }
-    public int build4(){
+  public int build4(){
+        
          System.out.println(tt4);
          
       return tt4;
   }
-//  public static void main(String[] args) {
-//    new Map();
-//       
-//  }
+
 }
 
 class Building extends cb implements MouseListener,MouseMotionListener
 {
+    
     private Building dropLabel;
     private shop shopI;
-    private MySoundEffect hitSound, themeSound;
+    private MySoundEffect hitSound;
     private Map set;
     private String Name;
     private bank bankI;
     
     public Building(String file1, int w, int h,Map Dora, String n,String file2)				
     { 
+        
         Name = n;
         addMouseListener(this);
         addMouseMotionListener(this);
         width = w; height = h; 
         set = Dora;
+        
         iconMode1 = new MyImageIcon(file1).resize(width, height);
-       iconMode2 = new MyImageIcon(file2).resize(width, height);      
+        iconMode2 = new MyImageIcon(file2).resize(width, height);      
         
 	setHorizontalAlignment(JLabel.CENTER);
 	setIcon(iconMode1);
-    hitSound = new MySoundEffect("Lovely/beep.wav");
-    themeSound = new MySoundEffect("Lovely/theme.wav");
+        hitSound = new MySoundEffect("Lovely/beep.wav");
+    
    
     }    
     public void setMoveConditions(int x, int y)
     {
-      
+        
         curX = x; curY = y;
-	      setBounds(curX, curY, width, height);
-        
-        
+	setBounds(curX, curY, width, height);
+           
     }
    public void mousePressed(MouseEvent fiwh){
        
@@ -177,11 +167,12 @@ class Building extends cb implements MouseListener,MouseMotionListener
     
        setCursor(new Cursor(Cursor.HAND_CURSOR));
        switchIcon();
-     
         
    }
    public void mouseExited(MouseEvent fiwh){
+       
        resetIcon();
+       
    }
    public void mouseClicked(MouseEvent fiwh){
 
@@ -189,12 +180,11 @@ class Building extends cb implements MouseListener,MouseMotionListener
        {
           if(shopI == null)
           {
-
-         set.setVisible(false);
-         hitSound.playOnce();
-         shopI = new shop(set.me,set.name, set.bb, set.ss, set.tt1, set.tt3, set.tt4);
-         shopI.setVisible(true); 
-
+           set.dispose();
+           hitSound.playOnce();
+           shopI = new shop(set.me,set.name, set.bb, set.ss, set.tt1, set.tt3, set.tt4);
+           shopI.setVisible(true); 
+ 
           }
        }
        if(Name == "b2")
@@ -202,10 +192,10 @@ class Building extends cb implements MouseListener,MouseMotionListener
           if(bankI == null)
           {
 
-          set.setVisible(false);
-         hitSound.playOnce();
-         bankI = new bank(set.me,set.name, set.bb, set.ss, set.tt1, set.tt3, set.tt4);
-         bankI.setVisible(true);
+          set.dispose();
+          hitSound.playOnce();
+          bankI = new bank(set.me,set.name, set.bb, set.ss, set.tt1, set.tt3, set.tt4);
+          bankI.setVisible(true);
          
           }
        }

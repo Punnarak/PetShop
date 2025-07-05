@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.awt.Container;
 import javax.swing.*;
 import javax.sound.sampled.*; // for sounds
 import java.util.*;
@@ -10,11 +11,12 @@ import javax.swing.event.ListSelectionListener;
 public class Load extends JFrame implements ActionListener {
 
  private JPanel contentpane;
+  private JPanel panel = new JPanel();
  private JButton okButton,cancelButton;
  private MyImageIcon BG;
  private JLabel drawpane;
  private JTextField Name;
- private MySoundEffect hitSound, themeSound;
+ private MySoundEffect hitSound;
  private int frameWidth = 500, frameHeight = 500;
  private String value;
  private int b,s,b1,b3,b4;
@@ -22,33 +24,37 @@ public class Load extends JFrame implements ActionListener {
  private Vector l;
  
  private Map MapI;
- private ProjectGame bFirstI;
+ private MainApplication bFirstI;
  
  protected Player user;
  
  private JList list ;
-private ArrayList<String> infon;
-private ArrayList<Player> User;
+ private ArrayList<String> infon;
+ private ArrayList<Player> User;
  public Load()
  {
      setTitle("Load Game");
-     setBounds( 750, 300, frameWidth, frameHeight);
-     setResizable(false);
+     setBounds( 500, 150, frameWidth, frameHeight);
+     setResizable(true);
      setVisible(true);
      contentpane = (JPanel) getContentPane();
      contentpane.setLayout(new BorderLayout());
-     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
      addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent e) {
-            dispose();
-            System.exit(0);
+     public void windowClosing(WindowEvent e) {
+          
+          dispose();
+          new MainApplication();
+ 
       }
     });
+     
      AddComponents();
      
  }
  public void AddComponents()
  { 
+     
       BG = new MyImageIcon("Lovely/load.png").resize(500,500);
       drawpane = new JLabel();
       drawpane.setIcon(BG);
@@ -56,20 +62,10 @@ private ArrayList<Player> User;
       drawpane.getPreferredSize();
       
      try{
+         
      infon = new ArrayList<String>(); 
      User = new ArrayList<>();    
-     
-
-     l = new Vector(infon.size());
-     DefaultListModel<String> l1 = new DefaultListModel<>();  
-     list = new JList<String>(l1);
-     list.setFont(new Font("Qwigley",Font.PLAIN,20));
-     list.setSelectedIndex(0);
-     list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-     list.setBounds(25,80,425,270); 
-     JScrollPane scrollPane1 = new JScrollPane(list);
-     
-     contentpane.add(scrollPane1);
+         
      Scanner scan = new Scanner(new File ("Player.txt"));    
      while(scan.hasNext()){
          
@@ -77,11 +73,29 @@ private ArrayList<Player> User;
                 infon.add(line);
                             
      }
+    
+          int size = infon.size(); 
+           String name[];
+           name = new String[size];
+          
      for(int i = 0;i<infon.size();i++){
-         l1.addElement(infon.get(i));
-     } 
 
-      hitSound = new MySoundEffect("Lovely/beep.wav");
+          name[i] = infon.get(i);
+     } 
+     
+     JLabel addd = new JLabel();
+     list = new JList<String>(name);
+     list.setFont(new Font("Qwigley",Font.PLAIN,20));
+     list.setSelectedIndex(0);
+     list.setVisibleRowCount(5);
+     list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+     JScrollPane x = new JScrollPane(list);
+     x.setBounds(25,80,425,270);
+     
+//add scrollPane
+     contentpane.add(x);
+    
+     hitSound = new MySoundEffect("Lovely/beep.wav");
 
      okButton = new JButton("OK");
   
@@ -96,7 +110,7 @@ private ArrayList<Player> User;
            { 
                
            setVisible(false);
-           bFirstI = new ProjectGame();
+           bFirstI = new MainApplication();
            bFirstI.setVisible(true);
         
            } 
@@ -105,21 +119,23 @@ private ArrayList<Player> User;
     okButton.setBounds(120,380,120,30);
     cancelButton.setBounds(260,380,120,30);
     
-    
+
     contentpane.add(okButton,BorderLayout.CENTER); //addButton
     contentpane.add(cancelButton,BorderLayout.CENTER); //addButton
-    contentpane.add(list);
     
-    contentpane.add(drawpane); 
+    
+    contentpane.add(drawpane);
+    validate();
      }catch(IOException e2){
          
      } 
-     validate();
+     
     
  }
  public void actionPerformed(ActionEvent e)
           {     
           try{
+              
           if(MapI == null)
            { 
                
@@ -129,15 +145,13 @@ private ArrayList<Player> User;
           setVisible(false);     
           
          hitSound.playOnce();
-          
- 
+
           for(int i = 0; i<infon.size() ;i++){
           
           scanme = new Scanner(new File (infon.get(i)+"O.txt"));   
          
            while(scanme.hasNext()){
-         
-                
+                 
                 String line = scanme.nextLine();
                 String [] column = line.split(",");
                 
@@ -167,6 +181,8 @@ private ArrayList<Player> User;
           }
  
   public static void main(String[] args) {
+      
     new Load();
+    
   }
 }

@@ -19,6 +19,8 @@ public class bank extends JFrame  implements KeyListener , ActionListener
   private JCheckBox c1,c2,c3;
   private MyImageIcon interBG,a,ub;
   private MyImageIcon shop,foodfac,toyfac;
+  private MySoundEffect banksound;
+  protected MySoundEffect hitSound = new MySoundEffect("Lovely/beep.wav");
   private option  bb1,bb2,bb;
   private JButton backButton,okButton,buyButton;
   private Map bMapI;
@@ -36,14 +38,14 @@ public class bank extends JFrame  implements KeyListener , ActionListener
  public bank(Player use,String n,int b,int ss,int t1,int t3,int t4) {
 
     setTitle("bank");
-    setBounds( 400, 200, frameWidth, frameHeight);
+    setBounds( 100, 40, frameWidth, frameHeight);
     setResizable(false);
     setVisible(true);
-    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
             dispose();
-            System.exit(0);
+            new Map(me,n, b, ss, me.getB1(), me.getB3(), me.getB4());
       }
     });
     me = use;
@@ -56,18 +58,19 @@ public class bank extends JFrame  implements KeyListener , ActionListener
     
 public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
     
+    
     interBG = new MyImageIcon("Lovely/Inside bank.jpg").resize(frameWidth, frameHeight);
     a = new MyImageIcon("Lovely/signb.jpg").resize(1366, 150);
-    ub = new MyImageIcon("Lovely/upbanner.png").resize(1366, 150);
+    ub = new MyImageIcon("Lovely/upbanner.jpg").resize(1366, 150);
     shop = new MyImageIcon("Lovely/shop.PNG").resize(80, 60);
     foodfac = new MyImageIcon("Lovely/food.PNG").resize(80, 70);
     toyfac = new MyImageIcon("Lovely/toy.PNG").resize(80, 60);
-    //Font font1 = new Font("DeJaVu Sans", Font.PLAIN, 20);
-    //Font font1 = new Font("Consolas", Font.BOLD, 20);
+    banksound = new MySoundEffect("Lovely/Kaching.wav");
+ 
     try{
-        pixel = Font.createFont(Font.TRUETYPE_FONT, new File("Lovely/PixelMplus12-Regular.ttf")).deriveFont(20f);
+        pixel = Font.createFont(Font.TRUETYPE_FONT, new File("Lovely/PixelMplus10-Regular.ttf")).deriveFont(20f);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Lovely/PixelMplus12-Regular.ttf")));
+        ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Lovely/PixelMplus10-Regular.ttf")));
     }catch(IOException | FontFormatException e)
     {
     
@@ -77,12 +80,14 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
     contentpane.setIcon(interBG);
     contentpane.setLayout(null);
     
+    //keep deposit/withdraw
     mon = new JLabel();
     mon.setIcon(a);
     mon.setLayout(null);
     mon.setBounds(0,0,1366,150);
     mon.setVisible(false);
 
+    //keep upgrade
     up = new JLabel();
     up.setIcon(ub);
     up.setBounds(0,0,1366,150);
@@ -108,14 +113,12 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
     dewith.setBounds(500,25,150,50);
 
     balance = new JTextField(Integer.toString(me.getMBank()),10);
-    //balance = new JTextField(Integer.toString(b),10);
     balance.setBounds(1100,20,100,50);
     balance.setFont(pixel);
     balance.setHorizontalAlignment(JTextField.RIGHT);
     balance.setEditable(false);
     
     struck = new JTextField(Integer.toString(me.getStruck()),10);
-    //struck = new JTextField(Integer.toString(ss),10);
     struck.setBounds(1100,85,100,50);
     struck.setFont(pixel);
     struck.setHorizontalAlignment(JTextField.RIGHT);
@@ -146,7 +149,7 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
     
     c1 = new JCheckBox();
     c1.setOpaque(false);
-    c1.setBounds(700,100,40,40);
+    c1.setBounds(725,100,40,40);
     if(me.getB1()==1)
     {
       c1.setVisible(false);
@@ -154,7 +157,7 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
    
     c2 = new JCheckBox();
     c2.setOpaque(false);
-    c2.setBounds(900,100,40,40);
+    c2.setBounds(925,100,40,40);
     if(me.getB3()==1)
     {
       c2.setVisible(false);
@@ -162,16 +165,20 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
     
     c3 = new JCheckBox();
     c3.setOpaque(false);
-    c3.setBounds(1100,100,40,40);
+    c3.setBounds(1125,100,40,40);
     if(me.getB4()==1)
     {
       c3.setVisible(false);
     }
     
-
-    buyButton = new JButton(new MyImageIcon("Lovely/buybtn.png").resize(100,50));
+    
+    buyButton = new JButton(new MyImageIcon("Lovely/buybtn.png").resize(85,35));
     buyButton.addActionListener(e -> handleOptions(c1,c2,c3));
-
+    if(me.getB1()==1 && me.getB3()==1 && me.getB4()==1)
+    {
+        buyButton.setVisible(false);
+    }
+    
     bb = new option("Lovely/bb.png",100,100,null,null,"bb","Lovely/bb2.png");
     bb.setPlayer(me);
     bb.setMoveConditions(1200, 200, true, true);  // move conditions & initial position
@@ -187,7 +194,8 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
     {
       public void actionPerformed(ActionEvent e)
       {
-          //  hitSound.playOnce();
+           
+           hitSound.playOnce();
            setVisible(false);
            bMapI = new Map(me,n, b, ss, me.getB1(), me.getB3(), me.getB4());
            bMapI.setVisible(true);
@@ -196,7 +204,7 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
     });
     backButton.setBounds(20,668,200,50);
     okButton.setBounds(650,25,100,50);
-    buyButton.setBounds(1200,40,100,50);
+    buyButton.setBounds(1200,100,85,35);
 
     mon.add(income);
     mon.add(okButton);
@@ -226,11 +234,7 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
     validate();
   }
 
-//  public static void main(String[] args) {
-//
-//    new bank();
-//
-//  }
+
  private void handleOptions(JCheckBox ch1,JCheckBox ch2,JCheckBox ch3)
  {
    int price = 0;
@@ -246,14 +250,6 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
    {
    meO = new FileWriter(new File (name+"O.txt"),false);
 
-   /*int price = 0;
-   int check1 = me.getB1();
-   int check2 = me.getB3();
-   int check3 = me.getB4();
-   
-   boolean u1 = false;
-   boolean u2 = false;
-   boolean u3 = false;*/
    
    if(check1==1)
    {
@@ -270,18 +266,18 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
 
    if(ch1.isSelected() && check1 != 1)
    {
-     price += 100;
+     price += 500;
      u1 = true;
 
    }
    if(ch2.isSelected() && check2 != 1)
    {
-     price += 200;
+     price += 1500;
      u2 = true;
    }
    if(ch3.isSelected() && check3 != 1)
    {
-     price += 300;
+     price += 3000;
      u3 = true;
    }
 
@@ -293,6 +289,7 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
    {
      if(price <= me.getMBank())
     {
+      banksound.playOnce();
       me.updateMoney(me.getMBank() - price);
       JOptionPane.showMessageDialog(null,"Complete :)","Transaction",JOptionPane.PLAIN_MESSAGE);
       stuck.setText(Integer.toString(me.getMBank()));
@@ -350,65 +347,13 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
    {
      ch3.setVisible(false);
    }
-
+   if(me.getB1()==1&&me.getB3()==1&&me.getB4()==1)
+   {
+     buyButton.setVisible(false);
    }
-  //   if(price <= me.getMBank())
-  //   {
-  //     me.updateMoney(me.getMBank() - price);
-  //     JOptionPane.showMessageDialog(null,"Complete :)","Transaction",JOptionPane.PLAIN_MESSAGE);
-  //     stuck.setText(Integer.toString(me.getMBank()));
-  //     balance.setText(Integer.toString(me.getMBank()));
-  //     struck.setText(Integer.toString(me.getStruck()));
-  //   }
-  //   else if(price > me.getMBank())
-  //   {
-  //     JOptionPane.showMessageDialog(null,"You don't have enough money in your account.","Transaction",JOptionPane.PLAIN_MESSAGE);
-
-  //   if(c1.isSelected())
-  //   {
-  //    u1 = false;
-  //   }
-  //   if(c2.isSelected())
-  //   {
-  //    u2 = false;
-  //   }
-  //   if(c3.isSelected() && check3 != 1)
-  //   {
-  //    u3 = false;
-  //   }
-    
-  //   }
-    
-  //   if(u1==true)
-  //   {
-  //     me.updateB1();
-  //   }
-  //   if(u2==true)
-  //   {
-  //     me.updateB3();
-  //   }
-  //   if(u3==true)
-  //   {
-  //     me.updateB4();
-  //   }
-
-  //   System.out.println(me.getB1());
-  //   System.out.println(me.getB3());
-  //   System.out.println(me.getB4());
-
-  //  if(me.getB1()==1)
-  //  {
-  //    c1.setVisible(false);
-  //  }
-  //  if(me.getB3()==1)
-  //  {
-  //    c2.setVisible(false);
-  //  }
-  //  if(me.getB4()==1)
-  //  {
-  //    c3.setVisible(false);
-  //  }
-
+   
+   }
+  
     meO.write(me.getName()+", "+me.getMBank()+", "+me.getStruck()+", "+me.getB1()+", "+me.getB3()+", "+me.getB4()+"\r\n"); 
     meO.close();
     }catch(Exception e){}
@@ -416,27 +361,33 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
 
  public void actionPerformed(ActionEvent e)
       {
+        if(Integer.parseInt(in) < 0)
+        {
+        JOptionPane.showMessageDialog(null,"Please Try Again","Deposit Denied",JOptionPane.PLAIN_MESSAGE);
+        income.setText("");
+        }
+        else{
         try{
           meO = new FileWriter(new File (name+"O.txt"),false);
           meF = new FileWriter(new File (name+"B.txt"),true); 
           
-   if(me.getB1()==1)
-   {
-     c1.setVisible(false);
-   }
-   if(me.getB3()==1)
-   {
-     c2.setVisible(false);
-   }
-   if(me.getB4()==1)
-   {
-     c3.setVisible(false);
-   }
-          
+        if(me.getB1()==1)
+        {
+        c1.setVisible(false);
+        }
+        if(me.getB3()==1)
+        {
+        c2.setVisible(false);
+        }
+        if(me.getB4()==1)
+        {
+        c3.setVisible(false);
+        }
+   
         option = (String)dewith.getSelectedItem();
         if(option.equals("Deposit"))
         { 
-        
+          
           System.out.println(option);
           System.out.println(in);
           if(Integer.parseInt(in) > me.getStruck())
@@ -445,6 +396,7 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
           }
           else
           {
+          banksound.playOnce();
           me.updateMBank(option,Integer.parseInt(in));
           System.out.printf("%d\n",me.getMBank());
           meF.write("\t\t"+in+"\t\t-----------------\r\n"); 
@@ -468,6 +420,7 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
           }
           else
           {
+          banksound.playOnce();
           me.updateMBank(option,Integer.parseInt(in));
           System.out.printf("%d\n",me.getMBank());
           meF.write("\t\t---------------  \t\t"+in+"\r\n"); 
@@ -483,6 +436,7 @@ public void AddComponents(String n,int b,int ss,int t1,int t3,int t4) {
           meO.close();
           meF.close();
            }catch(Exception e1){}
+      }
         } 
    public void keyTyped(KeyEvent e){ 
      
@@ -561,9 +515,6 @@ class option extends cb implements MouseListener,MouseMotionListener
         
         try
         {
-        //FileReader fr = new FileReader(p.getName()+"B.txt");
-        //BufferReader br = new BufferReader(fr);
-        //tarea.read(br, null);
         BufferedReader reader = 
         new BufferedReader(new FileReader(p.getName()+"B.txt"));
         tarea.read(reader, null);
@@ -575,7 +526,6 @@ class option extends cb implements MouseListener,MouseMotionListener
         }
         
         JFrame b = new JFrame("book bank");
-        //JTextArea tarea = new JTextArea();
         b.setBounds( 400, 200, 500, 500);
         b.setResizable(false);
         b.setVisible(true);

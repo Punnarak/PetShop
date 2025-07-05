@@ -100,14 +100,11 @@ public class shop extends JFrame
   
   //food ,toy frame
   protected JFrame food ,toy;
-//  public static final Color GOLD = new Color(255,204,51);
-  protected boolean stop = false;
-  
+ 
   //thread c
   protected Customer c  = new Customer();
   protected JButton cinButton;
   protected int connum = 1;
-//  protected JLabel Conc;
   
   protected MySoundEffect hitSound = new MySoundEffect("Lovely/beep.wav");
   protected MySoundEffect hitSoundd = new MySoundEffect("Lovely/drop.wav");
@@ -118,14 +115,14 @@ public class shop extends JFrame
    
    protected shop m;
   
-   
+//Shop page
 public shop(Player use,String n,int b,int s,int t1,int t3,int t4) {
 
     setTitle("shop");
-    setBounds( 300, 150, frameWidth, frameHeight);
+    setBounds( 100, 40, frameWidth, frameHeight);
     setResizable(false);
     setVisible(true);
-    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
 
@@ -137,11 +134,11 @@ public shop(Player use,String n,int b,int s,int t1,int t3,int t4) {
               
           }
             dispose();
-            System.exit(0);
+            new Map(me,n, b, ss, me.getB1(), me.getB3(), me.getB4());
       }
     });
     
-    me = use;
+    me = use; 
     Name = n;
     bb = b;
     ss = s;
@@ -163,17 +160,17 @@ public void AddComponents() {
     m = this;
    //pet
    i1 = new items("Lovely/p1.png",150,150,this,"i1","Lovely/p1.1.png",me);
-   i1.setMoveConditions(700, 420);  // move conditions & initial position
+   i1.setMoveConditions(700, 420);  
    i2 = new items("Lovely/p2.png",100,100,this,"i2","Lovely/p2.1.png",me);
-   i2.setMoveConditions(1100, 450);  // move conditions & initial position
+   i2.setMoveConditions(1100, 450);  
    i3 = new items("Lovely/p3.png",150,150,this,"i3","Lovely/p3.2.png",me);
-   i3.setMoveConditions(800, 420);  // move conditions & initial position
+   i3.setMoveConditions(800, 420);  
    i4 = new items("Lovely/p4.png",100,100,this,"i4","Lovely/p4.2.png",me);
-   i4.setMoveConditions(900, 220);  // move conditions & initial position
+   i4.setMoveConditions(900, 220);  
    i5 = new items("Lovely/p5.png",50,100,this,"i5","Lovely/p5.2.png",me);
-   i5.setMoveConditions(1100, 210);  // move conditions & initial position
+   i5.setMoveConditions(1100, 210);  
    i6 = new items("Lovely/p6.PNG",60,100,this,"i6","Lovely/p6.2.PNG",me);
-   i6.setMoveConditions(1000, 210);  // move conditions & initial position
+   i6.setMoveConditions(1000, 210);  
 
 
     
@@ -192,8 +189,7 @@ public void AddComponents() {
   
    if(tt4  == 1){
    
-    //sign food
-    
+    //sign food  
     JButton signf = new JButton();
     signf.setBounds(0,375,50,100);
     MyImageIcon sf = new MyImageIcon("Lovely/signf.png");
@@ -233,15 +229,17 @@ public void AddComponents() {
     pro.setDropLabel(pro);
     ban.setDropLabel(ban);
     
+    //show my name
     name = new JTextField(Name,10);
-    name.setBounds(150,25,100,30);
+    name.setBounds(150,25,200,30);
     name.setFont(new Font("Qwigley",Font.PLAIN,20));
     name.setHorizontalAlignment(JTextField.CENTER);
     name.setEditable(false);
     
+    //Show my money
     smoney = new JTextField(Integer.toString(me.getStruck()),10);
     smoney.setFont(new Font("DeJaVu Sans",Font.PLAIN,20));
-    smoney.setBounds(150,70,100,25);
+    smoney.setBounds(150,70,200,25);
     smoney.setHorizontalAlignment(JTextField.RIGHT);
     smoney.setEditable(false);
     
@@ -269,7 +267,7 @@ public void AddComponents() {
       }
     });
     
-    
+    //call customer
     cinButton = new JButton("Welcome"); 
     cinButton.setBounds(150,668,100,25);
     contentpane.add(cinButton);
@@ -308,21 +306,19 @@ public void AddComponents() {
   
    contentpane.add(backButton,BorderLayout.CENTER); //addButton
  
-   contentpane.add(i1); //addButton
-   contentpane.add(i2); //addButton
-   contentpane.add(i3); //addButton
-   contentpane.add(i4); //addButton
-   contentpane.add(i5); //addButton
-   contentpane.add(i6); //addButton
+   contentpane.add(i1); //addpet
+   contentpane.add(i2); //addpet
+   contentpane.add(i3); //addpet
+   contentpane.add(i4); //addpet
+   contentpane.add(i5); //addpet
+   contentpane.add(i6); //addpet
   
-   
-   
    contentpane.add(pick);
    
-   contentpane.add(smoney); //addButton
-   contentpane.add(name); //addButton 
-   contentpane.add(pro); //addButton
-   contentpane.add(ban); //addButton
+   contentpane.add(smoney); //addJTextField show name 
+   contentpane.add(name); //addJTextField show name 
+   contentpane.add(pro); //addprofile decorate 
+   contentpane.add(ban); 
    
     validate();
     repaint();
@@ -331,8 +327,8 @@ public void AddComponents() {
     public void foodstock(){
     
     if(food == null){
+        
     food = new JFrame("FOOD");
-    
     food.setBounds(20,150,500,500);
     food.setResizable(false);
     food.setVisible(true);
@@ -418,7 +414,7 @@ public void AddComponents() {
 
            c2 = new JCheckBox();
            c2.setBounds(235,150,20,20);
-          c2.setOpaque(false);
+           c2.setOpaque(false);
            c2.addItemListener(new ItemListener(){
                
                JLabel p2 = new JLabel(new MyImageIcon("Lovely/sc2.png").resize(50,50));
@@ -728,7 +724,7 @@ public void AddComponents() {
            r1.setOpaque(false);
            r1.addItemListener(new ItemListener(){
                
-                JLabel p4 = new JLabel(new MyImageIcon("Lovely/sr1.png").resize(50,50));
+               JLabel p4 = new JLabel(new MyImageIcon("Lovely/sr1.png").resize(50,50));
                public void itemStateChanged(ItemEvent e){
                    
                    if(e.getStateChange() == ItemEvent.SELECTED){
@@ -857,198 +853,231 @@ public void AddComponents() {
     okButton.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){
              
-            
             //cat
             if(scb[0] == 1 ){
-              if(c.r == 6 && c.c1==1){
-                  hitSoundK.playOnce();
-             c.ch1.switchIcon();
-              c.c1 -= 1;
-              c.i +=100;   
-                System.out.println("pick --> c1 --> "+c.c1);
-              me.updateStruck("Withdraw", 30);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));  
+                
+                if(c.r == 6 && c.c1==1){
                   
-              }else{
-               hitSoundW.playOnce();   
-              }
-              c1.setSelected(false);
-              contentpane.repaint();
+                   hitSoundK.playOnce();
+                   c.ch1.switchIcon();
+                   c.c1 -= 1;
+                   c.i +=100;   
+                   System.out.println("pick --> c1 --> "+c.c1);
+                   me.updateStruck("Withdraw", 30);
+                   System.out.println(me.getStruck());
+                   smoney.setText(Integer.toString(me.getStruck()));  
+                  
+                }else{
+                   hitSoundW.playOnce();   
+                }
+                   c1.setSelected(false);
+                   contentpane.repaint();
               
             }
             if(scb[1] == 1 ){
               
-              if(c.r == 6&& c.c2 == 1){
-                  hitSoundK.playOnce();
-              c.ch2.switchIcon();    
-              c.c2 -= 1;
-              c.i +=100;
-              System.out.println("pick --> c2 --> "+c.c2);
-              me.updateStruck("Withdraw", 30);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));  
+                if(c.r == 6&& c.c2 == 1){
+                  
+                 hitSoundK.playOnce();
+                 c.ch2.switchIcon();    
+                 c.c2 -= 1;
+                 c.i +=100;
+                 System.out.println("pick --> c2 --> "+c.c2);
+                 me.updateStruck("Withdraw", 30);
+                 System.out.println(me.getStruck());
+                 smoney.setText(Integer.toString(me.getStruck()));  
               
-              }else{
-                  hitSoundW.playOnce();
-              }
+                }else{
+                 hitSoundW.playOnce();
+                }
               
-              c2.setSelected(false);
-              contentpane.repaint();
+                 c2.setSelected(false);
+                 contentpane.repaint();
               
             }
             if(scb[2] == 1){
                 
-              if(c.r == 6 && c.c3 == 1){
+                if(c.r == 6 && c.c3 == 1){
+                  
                   hitSoundK.playOnce();
                   c.ch3.switchIcon();
-              c.c3 -= 1;
-              c.i +=100;   
-              System.out.println("pick --> c3 --> "+c.c3);
-              me.updateStruck("Withdraw", 20);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));
+                  c.c3 -= 1;
+                  c.i +=100;   
+                  System.out.println("pick --> c3 --> "+c.c3);
+                  me.updateStruck("Withdraw", 20);
+                  System.out.println(me.getStruck());
+                  smoney.setText(Integer.toString(me.getStruck()));
                 
-              }else{
-                hitSoundW.playOnce();  
-              } 
+                }else{
+                  
+                  hitSoundW.playOnce();  
+                  
+                } 
              
-              c3.setSelected(false);
-              contentpane.repaint();
+                  c3.setSelected(false);
+                  contentpane.repaint();
+                  
             }
             if(scb[3] == 1 ){
               
                 if(c.r == 7&& c.c4 == 1){
+                    
                     hitSoundK.playOnce();
                     c.ch1.switchIcon();
-                 c.c4 -= 1;
-                 c.i +=100;   
-                 System.out.println("pick --> c4 --> "+c.c4);
-                 me.updateStruck("Withdraw", 20);
-                 System.out.println(me.getStruck());
-                 smoney.setText(Integer.toString(me.getStruck()));
+                    c.c4 -= 1;
+                    c.i +=100;   
+                    System.out.println("pick --> c4 --> "+c.c4);
+                    me.updateStruck("Withdraw", 20);
+                    System.out.println(me.getStruck());
+                    smoney.setText(Integer.toString(me.getStruck()));
                  
                 }else{
-                   hitSoundW.playOnce(); 
+                    
+                    hitSoundW.playOnce(); 
+                    
                 }
               
-              c4.setSelected(false);
-              contentpane.repaint();
+                    c4.setSelected(false);
+                    contentpane.repaint();
               
             }
             if(scb[4] == 1 ){
               
-              if(c.r == 7&& c.c5 == 1){
-                  hitSoundK.playOnce();
-                  c.ch2.switchIcon();
-              c.c5 -= 1;
-              c.i +=100;
-              System.out.println("pick --> c5 --> "+c.c5);
-              me.updateStruck("Withdraw", 20);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));
+                if(c.r == 7&& c.c5 == 1){
+                    
+                    hitSoundK.playOnce();
+                    c.ch2.switchIcon();
+                    c.c5 -= 1;
+                    c.i +=100;
+                    System.out.println("pick --> c5 --> "+c.c5);
+                    me.updateStruck("Withdraw", 20);
+                    System.out.println(me.getStruck());
+                    smoney.setText(Integer.toString(me.getStruck()));
               
               }else{
-                hitSoundW.playOnce();
+                    
+                    hitSoundW.playOnce();
+                
               }
               
-              c5.setSelected(false);
-              contentpane.repaint();
+                    c5.setSelected(false);
+                     contentpane.repaint();
               
             }
             
             //dog
             if(sdb[0] == 1 ){
-              if(c.r == 7&& c.d1 == 1){
-                  hitSoundK.playOnce();
-                  c.ch3.switchIcon();
-              c.d1 -= 1;
-              c.i +=100;
-              System.out.println("pick --> d1 --> "+c.d1);
-              me.updateStruck("Withdraw", 30);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));
+                
+                if(c.r == 7&& c.d1 == 1){
+                  
+                    hitSoundK.playOnce();
+                    c.ch3.switchIcon();
+                    c.d1 -= 1;
+                    c.i +=100;
+                    System.out.println("pick --> d1 --> "+c.d1);
+                    me.updateStruck("Withdraw", 30);
+                    System.out.println(me.getStruck());
+                    smoney.setText(Integer.toString(me.getStruck()));
               
-              }else{
+                }else{
+                    
                  hitSoundW.playOnce(); 
-              }
+                 
+                }
              
-              d1.setSelected(false);
-              contentpane.repaint();
+                 d1.setSelected(false);
+                 contentpane.repaint();
               
             }
             if(sdb[1] == 1 ){
               
               if(c.r == 7&& c.d2 == 1){
+                  
                   hitSoundK.playOnce();
                   c.ch4.switchIcon();
-              c.d2 -= 1;
-              c.i +=100;
-              System.out.println("pick --> d2 --> "+c.d2);
-              me.updateStruck("Withdraw", 30);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));   
+                  c.d2 -= 1;
+                  c.i +=100;
+                  System.out.println("pick --> d2 --> "+c.d2);
+                  me.updateStruck("Withdraw", 30);
+                  System.out.println(me.getStruck());
+                  smoney.setText(Integer.toString(me.getStruck())); 
+                  
               }else{
-                 hitSoundW.playOnce(); 
+                  
+                  hitSoundW.playOnce(); 
+                  
               }
               
-              d2.setSelected(false);
-              contentpane.repaint();
+                  d2.setSelected(false);
+                  contentpane.repaint();
               
             }
             if(sdb[2] == 1 ){
+                
               if(c.r == 8&& c.d3 == 1){
-              hitSoundK.playOnce();
-              c.ch1.switchIcon();
-              c.d3 -= 1;
-              c.i +=100;
-              System.out.println("pick --> d3 --> "+c.d3);
-              me.updateStruck("Withdraw", 20);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));   
+                  
+                hitSoundK.playOnce();
+                c.ch1.switchIcon();
+                c.d3 -= 1;
+                c.i +=100;
+                System.out.println("pick --> d3 --> "+c.d3);
+                me.updateStruck("Withdraw", 20);
+                System.out.println(me.getStruck());
+                smoney.setText(Integer.toString(me.getStruck()));   
+                
               }else{
-                hitSoundW.playOnce();  
+                  
+                hitSoundW.playOnce();
+                
               }
               
-              d3.setSelected(false);
-              contentpane.repaint();
+                d3.setSelected(false);
+                contentpane.repaint();
               
             }
             if(sdb[3] == 1 ){
               
                 if(c.r == 8&& c.d4 == 1){
-                    hitSoundK.playOnce();
-               c.ch2.switchIcon();
-               c.d4 -= 1;
-              c.i +=100;
-              System.out.println("pick --> d4 --> "+c.d4);
-               me.updateStruck("Withdraw", 20);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));  
+                    
+                hitSoundK.playOnce();
+                c.ch2.switchIcon();
+                c.d4 -= 1;
+                c.i +=100;
+                System.out.println("pick --> d4 --> "+c.d4);
+                me.updateStruck("Withdraw", 20);
+                System.out.println(me.getStruck());
+                smoney.setText(Integer.toString(me.getStruck()));  
                 }else{
+                    
                   hitSoundW.playOnce();  
+                  
                 }
               
-              d4.setSelected(false);
-              contentpane.repaint();
+                d4.setSelected(false);
+                contentpane.repaint();
               
             }
             if(sdb[4] == 1 ){
-              if(c.r == 8&& c.d5 == 1){
-                  hitSoundK.playOnce();
-              c.ch3.switchIcon();    
-              c.d5 -= 1;
-              c.i +=100;
-              System.out.println("pick --> d5 --> "+c.d5);
-              me.updateStruck("Withdraw", 20);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));  
-              }else{
+                
+                if(c.r == 8&& c.d5 == 1){
+                  
+                 hitSoundK.playOnce();
+                 c.ch3.switchIcon();    
+                 c.d5 -= 1;
+                 c.i +=100;
+                 System.out.println("pick --> d5 --> "+c.d5);
+                 me.updateStruck("Withdraw", 20);
+                 System.out.println(me.getStruck());
+                 smoney.setText(Integer.toString(me.getStruck())); 
+                 
+                }else{
+                  
                 hitSoundW.playOnce();  
-              }  
+                
+                }  
               
-              d5.setSelected(false);
-              contentpane.repaint();
+                d5.setSelected(false);
+                contentpane.repaint();
               
             }
             
@@ -1056,20 +1085,23 @@ public void AddComponents() {
             if(srb[0] == 1 ){
               
                 if(c.r == 8&& c.r1 == 1){
+                    
                     hitSoundK.playOnce();
                     c.ch4.switchIcon();
-              c.r1 -= 1;
-              c.i +=100;
-              System.out.println("pick --> r1 --> "+c.r1);
-              me.updateStruck("Withdraw", 30);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));
+                    c.r1 -= 1;
+                    c.i +=100;
+                    System.out.println("pick --> r1 --> "+c.r1);
+                    me.updateStruck("Withdraw", 30);
+                    System.out.println(me.getStruck());
+                    smoney.setText(Integer.toString(me.getStruck()));
+                    
                 }else{
+                    
                    hitSoundW.playOnce(); 
                 }
               
-              r1.setSelected(false);
-              contentpane.repaint();
+                   r1.setSelected(false);
+                   contentpane.repaint();
               
             }
             if(srb[1] == 1 ){
@@ -1078,80 +1110,96 @@ public void AddComponents() {
                     hitSoundK.playOnce();
                     c.ch1.switchIcon();
                     c.r2 -= 1;
-              c.i +=100;
-              System.out.println("pick --> r2 --> "+c.r2);
-                     me.updateStruck("Withdraw", 30);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));
+                    c.i +=100;
+                    System.out.println("pick --> r2 --> "+c.r2);
+                    me.updateStruck("Withdraw", 30);
+                    System.out.println(me.getStruck());
+                    smoney.setText(Integer.toString(me.getStruck()));
+                    
                 }else{
+                    
                    hitSoundW.playOnce(); 
+                   
                 }
              
-              r2.setSelected(false);
-              contentpane.repaint();
+                    r2.setSelected(false);
+                    contentpane.repaint();
               
             }
             if(srb[2] == 1 ){
-              if(c.r == 9&& c.r3 == 1){
+                
+                if(c.r == 9&& c.r3 == 1){
+                  
                   hitSoundK.playOnce();
                   c.ch2.switchIcon();
                   c.r3 -= 1;
-              c.i +=100;
-              System.out.println("pick --> r3 --> "+c.r3);
+                  c.i +=100;
+                  System.out.println("pick --> r3 --> "+c.r3);
                   me.updateStruck("Withdraw", 20);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));
-              }else{
-                 hitSoundW.playOnce(); 
-              }
+                  System.out.println(me.getStruck());
+                  smoney.setText(Integer.toString(me.getStruck()));
+                  
+                }else{
+                    
+                  hitSoundW.playOnce(); 
+                  
+                }
               
-              r3.setSelected(false);
-              contentpane.repaint();
+                  r3.setSelected(false);
+                  contentpane.repaint();
               
             }
             if(srb[3] == 1 ){
-              if(c.r == 9 && c.r4 == 1){
+                
+                if(c.r == 9 && c.r4 == 1){
+                  
                   hitSoundK.playOnce();
                   c.ch3.switchIcon();
                   c.r4 -= 1;
-              c.i +=100;
-              System.out.println("pick --> r4 --> "+c.r4);
-                me.updateStruck("Withdraw", 20);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));  
-              }else{
-                hitSoundW.playOnce();  
-              } 
+                  c.i +=100;
+                  System.out.println("pick --> r4 --> "+c.r4);
+                  me.updateStruck("Withdraw", 20);
+                  System.out.println(me.getStruck());
+                  smoney.setText(Integer.toString(me.getStruck()));  
+                  
+                }else{
+                    
+                  hitSoundW.playOnce(); 
+                  
+                } 
               
-              r4.setSelected(false);
-              contentpane.repaint();
+                  r4.setSelected(false);
+                  contentpane.repaint();
               
             }
             if(srb[4] == 1 ){
-              if(c.r == 9 && c.r5 == 1){
+                
+                if(c.r == 9 && c.r5 == 1){
+                  
                   hitSoundK.playOnce();
                   c.ch4.switchIcon();
                   c.r5 -= 1;
-              c.i +=100;
-              System.out.println("pick --> r5 --> "+c.r5);
-                me.updateStruck("Withdraw", 20);
-              System.out.println(me.getStruck());
-              smoney.setText(Integer.toString(me.getStruck()));  
-              }else{
-                hitSoundW.playOnce();  
-              }
+                  c.i +=100;
+                  System.out.println("pick --> r5 --> "+c.r5);
+                  me.updateStruck("Withdraw", 20);
+                  System.out.println(me.getStruck());
+                  smoney.setText(Integer.toString(me.getStruck()));  
+                  
+                }else{
+                    
+                  hitSoundW.playOnce();  
+                
+                }
               
-              r5.setSelected(false);
-              contentpane.repaint();
+                  r5.setSelected(false);
+                  contentpane.repaint();
               
             }
             
             pick.removeAll();
             pick.validate();
             pick.repaint();
-            
-            
-            
+             
         }
     });
     
@@ -1161,10 +1209,13 @@ public void AddComponents() {
     consc.setVisible(true);
     confood.add(consc);
     cat.addActionListener(new ActionListener(){
+        
         public void actionPerformed(ActionEvent e){
+            
             consd.setVisible(false);
             consc.setVisible(true);
             consr.setVisible(false);
+            
         }
     });
     
@@ -1173,10 +1224,13 @@ public void AddComponents() {
     confood.add(dog);
     confood.add(consd);
     dog.addActionListener(new ActionListener(){
+        
         public void actionPerformed(ActionEvent e){
+            
             consd.setVisible(true);
             consc.setVisible(false);
             consr.setVisible(false);
+            
         }
     });
     
@@ -1185,10 +1239,13 @@ public void AddComponents() {
     confood.add(rabbit);
     confood.add(consr);
     rabbit.addActionListener(new ActionListener(){
+        
         public void actionPerformed(ActionEvent e){
+            
             consd.setVisible(false);
             consc.setVisible(false);
             consr.setVisible(true);
+            
         }
     });
     
@@ -1200,18 +1257,20 @@ public void AddComponents() {
         
         if(toy == null){
             
-    toy = new JFrame("TOY");
-    
+    toy = new JFrame("TOY");   
     toy.setBounds(20,150,500,500);
     toy.setResizable(false);
     toy.setVisible(true);
     toy.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     toy.addWindowListener(new WindowAdapter() {
+        
       public void windowClosing(WindowEvent e) {
+          
             toy = null;           
             pick.removeAll();
             pick.validate();
             pick.repaint();
+            
       }
     });
     
@@ -1221,7 +1280,7 @@ public void AddComponents() {
     contoy.setIcon(shelf);
     contoy.setLayout(null); 
     
-    //cat shelf
+            //cat shelf
            consct = new JLabel();
            consct.setBounds(0,0,500,500);
            consct.setLayout(null);
@@ -1980,8 +2039,13 @@ class Customer extends Thread{
     public void run(){
                
         random = new java.util.Random();
-        int rp = random.nextInt(6);
-        System.out.println("Customer --> "+r);
+        int rp = 0;
+        while(rp==0){
+            rp = random.nextInt(7-1)+1;
+        }
+         
+        
+        System.out.println("Customer --> "+rp);
         MyImageIcon cc = new MyImageIcon(c[rp]);
         JLabel cin = new JLabel(cc.resize(150,150));
         cin.setBounds(-10,590,150,150);
@@ -2009,24 +2073,50 @@ class Customer extends Thread{
         random = new java.util.Random();
         int []sf = {1,2,6,7,8,9};     
         if(food == 0 && toy == 0){
-           r = random.nextInt(3-1)+1;
+            
+         r = 0;
+        while(r==0){
+            
+            r = random.nextInt(3-1)+1;
+           
+        }
         }
         // mee food
         
         else if(food == 1 && toy == 0){
-          int rp = random.nextInt(7-1)+1;
-          r = sf[rp];
+            
+         r = 0;
+        while(r==0){
+            
+           int rp = random.nextInt(7-1)+1;
+           r = sf[rp];
+        }
+          
+          
         }
         
         // mee toy
         else if(food == 0 && toy == 1){
-          r = random.nextInt(6-1)+1;
+            
+        r = 0;
+        while(r==0){
+            
+            r = random.nextInt(6-1)+1;
+           
+        }
+          
         }  
         
         // mee everything
         else if(food == 1 && toy == 1 ){
-          r = random.nextInt(10-1)+1;
-             
+            
+         r = 0;
+        while(r==0){
+            
+          r = random.nextInt(10-1)+1;  
+           
+        }
+                    
         }
        
        System.out.println(r);

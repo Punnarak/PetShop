@@ -12,28 +12,28 @@ public class New extends JFrame implements KeyListener{
  private MyImageIcon BG;
  private JLabel drawpane;
  private JTextField Name;
- private MySoundEffect hitSound, themeSound;
+ private MySoundEffect hitSound;
  private int frameWidth = 500, frameHeight = 230;
  
  private String NameP;
  private Map MapI;
- private ProjectGame bFirstI;
+ private MainApplication bFirstI;
  protected Player user;
 
  public New()
  {
      
      setTitle("New Player");
-     setBounds( 750, 400, frameWidth, frameHeight);
+     setBounds( 500, 250, frameWidth, frameHeight);
      setResizable(false);
      setVisible(true);
      contentpane = (JPanel) getContentPane();
      contentpane.setLayout(new BorderLayout());
- setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    addWindowListener(new WindowAdapter() {
+     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
             dispose();
-            System.exit(0);
+            new MainApplication();
       }
     });
      AddComponents();
@@ -48,8 +48,7 @@ public class New extends JFrame implements KeyListener{
      drawpane.setLayout(null);
      
      hitSound = new MySoundEffect("Lovely/beep.wav");
-     themeSound = new MySoundEffect("Lovely/theme.wav");
-
+     
      Name = new JTextField(20);
      Name.setBounds(75,73,350,30);
      Name.setHorizontalAlignment(JTextField.CENTER);
@@ -80,6 +79,7 @@ public class New extends JFrame implements KeyListener{
          repeat = 0;
      }
      else{
+         
      for(int i = 0 ; i<info.size();i++){
          
       if(!Name.getText().equalsIgnoreCase(info.get(i)) && !Name.getText().isEmpty()){
@@ -87,14 +87,19 @@ public class New extends JFrame implements KeyListener{
         repeat = 0;
                              
          }else if(Name.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null,"Please enter your name ","New Player",JOptionPane.PLAIN_MESSAGE);
+             repeat = 1;
+             JOptionPane.showMessageDialog(null,"Please enter your name ","New Player",JOptionPane.PLAIN_MESSAGE);
                     
          }else if(Name.getText().equalsIgnoreCase(info.get(i))){
-                    JOptionPane.showMessageDialog(null,"Your name is already taken ","New Player",JOptionPane.ERROR_MESSAGE);
+             repeat = 1;
+            JOptionPane.showMessageDialog(null,"Your name is already taken ","New Player",JOptionPane.ERROR_MESSAGE); 
+            Name.setText("");
          }  
      }
      }
+     
      if(repeat == 0){
+         
          user = new Player(NameP,500,0,0,0,0);       
          System.out.println(user.getName());
          
@@ -110,9 +115,10 @@ public class New extends JFrame implements KeyListener{
          me.close();
          useo.close();
          output.close();
-         setVisible(false);     
+         dispose();   
          hitSound.playOnce();
          Player user = new Player(NameP,500,0,0,0,0);
+         System.out.println(repeat);
          MapI = new Map(user,NameP,500,0,0,0,0);
          MapI.setVisible(true);
      }
@@ -137,9 +143,9 @@ public class New extends JFrame implements KeyListener{
     {
       public void actionPerformed(ActionEvent e)
       {
-          //  hitSound.playOnce();
+            hitSound.playOnce();
            setVisible(false);
-           bFirstI = new ProjectGame();
+           bFirstI = new MainApplication();
            bFirstI.setVisible(true);
         
       }
